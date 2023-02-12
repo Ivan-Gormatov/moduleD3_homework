@@ -1,0 +1,47 @@
+<!--  наследуемся от шаблона default.html, который мы создавали ещё во времена flatpages -->
+{% extends 'flatpages/default.html' %} 
+
+{% load censor_filters %} <!-- не забываем заранее загружать наши фильтры! -->
+ 
+
+{% block title %}
+NEWS
+{% endblock title %}
+ 
+
+{% block content %}
+<h1>Все статьи</h1>
+<hr>
+    {% if news %}
+        <h2> Всего статей: {{ news|length}} </h2>
+        <br>
+        <table>
+            <tr>
+                <td>
+                    Заголовок статьи
+                </td>
+                <td>
+                    Дата публикации
+                </td>
+                <td>
+                    Статья
+                </td>
+            </tr>
+        {% for new in news %}
+            <tr>
+                <td>
+                    {{ new.title|censor }} <!-- используем фильтр censor  -->
+                </td>
+                <td>
+                    {{ new.dateCreat|date:'d M Y h:m' }}
+                </td>
+                <td>
+                    {{ new.text|censor|truncatechars:50 }} <!-- используем фильтр censor и выводим только 50 знаков статьи -->
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <h2> Статей нет!</h2>
+    {% endif %}
+{% endblock content %}
